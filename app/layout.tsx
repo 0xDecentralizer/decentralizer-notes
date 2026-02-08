@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { Navigation } from '@/components/Navigation'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -35,54 +36,7 @@ export default function RootLayout({
             
             {/* Header */}
             <header className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-              <nav className="max-w-4xl mx-auto px-4 py-6">
-                <div className="flex items-center justify-between">
-                  
-                  {/* Logo + Title */}
-                  <Link
-                    href="/"
-                    className="flex items-center gap-3 text-2xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                  >
-                    <Image
-                      src="/logo.png"
-                      alt="Decentralizer Logo"
-                      width={64}
-                      height={64}
-                      priority
-                    />
-                    <span>Decentralizer Notes</span>
-                  </Link>
-
-                  {/* Navigation */}
-                  <div className="flex items-center gap-6">
-                    <Link
-                      href="/blog"
-                      className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-                    >
-                      Blog
-                    </Link>
-                    <Link
-                      href="/projects"
-                      className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-                    >
-                      Projects
-                    </Link>
-                    <Link
-                      href="/learning"
-                      className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-                    >
-                      Learning Log
-                    </Link>
-                    <Link
-                      href="/about"
-                      className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-                    >
-                      About
-                    </Link>
-                    <ThemeToggle />
-                  </div>
-                </div>
-              </nav>
+              <Navigation />
             </header>
 
             {/* Main */}
