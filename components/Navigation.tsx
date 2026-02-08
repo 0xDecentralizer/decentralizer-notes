@@ -19,9 +19,10 @@ export function Navigation() {
           <Image
             src="/logo.png"
             alt="Decentralizer Logo"
-            width={48}
-            height={48}
+            width={128}
+            height={128}
             className="w-10 h-10 md:w-16 md:h-16"
+            quality={100}
             priority
           />
           <span className="hidden sm:inline">Decentralizer Notes</span>
