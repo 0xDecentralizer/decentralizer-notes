@@ -30,6 +30,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"
+        />
+      </head>
       <body className={inter.className}>
         <ThemeProvider>
           <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors">

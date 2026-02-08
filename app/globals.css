@@ -70,3 +70,116 @@ pre code {
 .dark .prose blockquote {
   @apply text-gray-400 border-gray-700;
 }
+
+/* Highlight.js Syntax Highlighting */
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+  background: #1f2937;
+  border-radius: 0.5rem;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-name,
+.hljs-tag {
+  color: #7dd3fc; /* Blue */
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-section,
+.hljs-attribute,
+.hljs-literal,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type {
+  color: #86efac; /* Green */
+}
+
+.hljs-number {
+  color: #fbbf24; /* Yellow */
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #9ca3af; /* Gray */
+  font-style: italic;
+}
+
+.hljs-function,
+.hljs-params {
+  color: #c084fc; /* Purple */
+}
+
+/* Light mode */
+.prose code {
+  background: transparent !important;
+}
+
+.prose pre {
+  background: #1f2937 !important;
+  padding: 0 !important;
+}
+
+
+
+
+/* Prism.js Theme */
+@import 'prismjs/themes/prism-tomorrow.css';
+
+/* Custom Code Block Styling */
+pre[class*="language-"] {
+  margin: 1.5em 0;
+  padding: 1.5rem !important;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  background: #1f2937 !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+/* Inline code - in text */
+code.inline-code,
+:not(pre) > code {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #1e40af;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid #93c5fd;
+  white-space: nowrap;
+}
+
+.dark code.inline-code,
+.dark :not(pre) > code {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: #93c5fd;
+  border: 1px solid #3b82f6;
+}
+
+.dark :not(pre) > code {
+  background: rgb(55 65 81);
+  color: rgb(252 165 165);
+}
+
+/* Scrollbar for code blocks */
+pre[class*="language-"]::-webkit-scrollbar {
+  height: 8px;
+}
+
+pre[class*="language-"]::-webkit-scrollbar-track {
+  background: #374151;
+  border-radius: 4px;
+}
+
+pre[class*="language-"]::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 4px;
+}
+
+pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}

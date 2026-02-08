@@ -2,6 +2,7 @@ import { getAllPosts, getPostBySlug } from '@/lib/blog'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import { format } from 'date-fns'
 import Link from 'next/link'
+import { CodeBlock } from '@/components/CodeBlock'
 
 export async function generateStaticParams() {
   const posts = await getAllPosts()
@@ -46,7 +47,22 @@ export default async function BlogPost({ params }: { params: { slug: string } })
         </header>
 
         <div className="prose prose-lg dark:prose-invert max-w-none">
-          <MDXRemote source={post.content} />
+          <MDXRemote 
+            source={post.content}
+            components={{
+              code: ({ className, children, ...props }: any) => {
+                const isInline = !className
+                return (
+                  <CodeBlock 
+                    className={className}
+                    inline={isInline}
+                  >
+                    {children}
+                  </CodeBlock>
+                )
+              },
+            }}
+          />
         </div>
       </article>
 
