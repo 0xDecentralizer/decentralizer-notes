@@ -5,7 +5,7 @@ export default function AboutPage() {
       
       <div className="prose prose-lg dark:prose-invert max-w-none">
         <p className="text-xl text-gray-600 dark:text-gray-300 mb-6">
-          Hey! I'm a developer learning Solidity and Web3 development in public.
+          Hey! I'm Mohammad Mahdi (0xDecentralizer).
         </p>
 
         <h2 className="text-2xl font-semibold mt-8 mb-4 text-gray-900 dark:text-white">My Journey</h2>
@@ -43,15 +43,21 @@ export default function AboutPage() {
         </p>
         <ul className="list-none space-y-2 mb-6">
           <li>
-            <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" 
+            <a href="https://github.com/0xdecentralizer" target="_blank" rel="noopener noreferrer" 
                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
               GitHub - Check out my projects
             </a>
           </li>
           <li>
-            <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer"
+            <a href="https://twitter.com/0xdecentralizer" target="_blank" rel="noopener noreferrer"
                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
               Twitter - Follow my journey
+            </a>
+          </li>
+          <li>
+            <a href="https://t.me/Oxdecentralizer" target="_blank" rel="noopener noreferrer"
+               className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+              Telegram - Connect closer =]
             </a>
           </li>
         </ul>
