@@ -1,13 +1,17 @@
+import Link from 'next/link'
+
 export default function ProjectsPage() {
   const projects = [
     {
-      title: "Simple Token Contract",
-      description: "My first ERC-20 token implementation with basic transfer and balance functionality.",
-      tech: ["Solidity", "Hardhat", "OpenZeppelin"],
-      status: "completed",
-      github: "https://github.com/yourusername/simple-token",
+      title: "Decentralized Token Escrow",
+      description: "A trustless escrow contract enabling peer-to-peer ERC-20 token swaps with predefined terms. Users can securely exchange tokens without intermediaries.",
+      tech: ["Solidity", "Hardhat", "OpenZeppelin", "Sepolia"],
+      status: "deployed",
+      github: "https://github.com/0xDecentralizer/Escrow-contract",
+      liveDemo: "/projects/escrow",
+      isLive: true,
     },
-    // Add more projects as you build them
+    // Next projects...
   ]
 
   return (
@@ -21,14 +25,30 @@ export default function ProjectsPage() {
         {projects.map((project, index) => (
           <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-500 dark:hover:border-blue-400 hover:shadow-lg transition-all bg-white dark:bg-gray-800">
             <div className="flex items-start justify-between mb-3">
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">{project.title}</h2>
-              <span className={`text-xs px-2 py-1 rounded ${
-                project.status === 'completed' ? 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300' :
-                project.status === 'in-progress' ? 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300' :
-                'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
-              }`}>
-                {project.status}
-              </span>
+              {project.liveDemo ? (
+                <Link href={project.liveDemo}>
+                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                    {project.title}
+                  </h2>
+                </Link>
+              ) : (
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">{project.title}</h2>
+              )}
+              <div className="flex gap-2">
+                {project.isLive && (
+                  <span className="text-xs px-2 py-1 rounded bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300 flex items-center gap-1">
+                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    Live
+                  </span>
+                )}
+                <span className={`text-xs px-2 py-1 rounded ${
+                  project.status === 'deployed' ? 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300' :
+                  project.status === 'in-progress' ? 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300' :
+                  'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
+                }`}>
+                  {project.status}
+                </span>
+              </div>
             </div>
             
             <p className="text-gray-600 dark:text-gray-300 mb-4">{project.description}</p>
@@ -41,14 +61,24 @@ export default function ProjectsPage() {
               ))}
             </div>
             
-            <a 
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium"
-            >
-              View on GitHub →
-            </a>
+            <div className="flex gap-3">
+              {project.liveDemo && (
+                <Link 
+                  href={project.liveDemo}
+                  className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-bold"
+                >
+                  View Live Demo →
+                </Link>
+              )}
+              <a 
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 text-sm font-medium"
+              >
+                GitHub →
+              </a>
+            </div>
           </div>
         ))}
 
