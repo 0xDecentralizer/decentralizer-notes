@@ -33,9 +33,9 @@ export default function Home() {
           </div>
         </Link>
 
-        <Link href="/learning" className="group">
+        <Link href="/roadmap" className="group">
           <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-500 dark:hover:border-blue-400 hover:shadow-lg transition-all bg-white dark:bg-gray-800">
-            <h2 className="text-2xl font-semibold mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 text-gray-900 dark:text-white">📚 Learning Log</h2>
+            <h2 className="text-2xl font-semibold mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 text-gray-900 dark:text-white">📚 Blockchain Roadmap</h2>
             <p className="text-gray-600 dark:text-gray-300">
               Weekly updates on what I'm learning, resources I find valuable, and my progress.
             </p>
