@@ -1,33 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blockchain Developer - Senior Track</title>
-    
-    <!-- بارگذاری ری‌اکت و رندرکننده آن -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    
-    <!-- بارگذاری بابل برای ترجمه داینامیک JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+"use client";
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-    </style>
-</head>
-<body>
+import { useEffect, useMemo, useState } from "react";
 
-    <div id="root"></div>
-
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
-
-        const PHASES = [
+const PHASES = [
           {
             id: 1,
             title: "Foundations & JavaScript Upgrade",
@@ -493,8 +468,7 @@
             milestone: "You have 6 deployed projects, an audit contest participation, and a technical blog. You can design, build, test, and ship production-grade protocol code.",
           },
         ];
-
-        const PARALLEL_SKILLS = [
+const PARALLEL_SKILLS = [
           { icon: "📐", title: "CS Fundamentals", items: ["Data structures & algorithms", "Cryptography basics", "Networking (TCP/IP)", "OS concepts"], when: "Month 1–2" },
           { icon: "🔧", title: "Dev Tools & Git", items: ["Git branch, rebase, cherry-pick", "GitHub Actions (CI/CD)", "VS Code advanced config", "Foundry, Hardhat mastery"], when: "Month 1+" },
           { icon: "📊", title: "DeFi Protocol Reading", items: ["Read Uniswap v3 code", "Read Aave v3 codebase", "Follow protocol governance", "Track audit reports weekly"], when: "Month 3+" },
@@ -502,8 +476,7 @@
           { icon: "🌐", title: "Community", items: ["Join ETHGlobal hackathons", "Follow Protocol Twitter", "Engage in governance forums", "Answer on StackExchange"], when: "Month 6+" },
           { icon: "🧠", title: "Economics & Game Theory", items: ["Tokenomics design basics", "Mechanism design reading", "MEV research", "Incentive alignment patterns"], when: "Month 8+" },
         ];
-
-        const BOOKS = [
+const BOOKS = [
           { title: "Mastering Ethereum", author: "Andreas M. Antonopoulos", tag: "Essential" },
           { title: "Solidity Programming Essentials", author: "Ritesh Modi", tag: "Solidity" },
           { title: "Designing Data-Intensive Applications", author: "Martin Kleppmann", tag: "System Design" },
@@ -511,142 +484,237 @@
           { title: "Zero to One", author: "Peter Thiel", tag: "Product Thinking" },
         ];
 
-        const tagColors = { start: "#00D9FF", intermediate: "#A855F7", advanced: "#F59E0B", senior: "#FF6B6B" };
-        const tagLabels = { start: "Foundations", intermediate: "Intermediate", advanced: "Advanced", senior: "Senior" };
+/* =========================
+   TYPES HELPERS
+========================= */
+type ProgressMap = {
+  [phaseId: number]: {
+    completedTopics: string[];
+    completedWeeks: string[];
+  };
+};
 
-        function BlockchainRoadmap() {
-          const [activePhase, setActivePhase] = useState(0);
-          const [activeWeek, setActiveWeek] = useState(0);
-          const [completedPhases, setCompletedPhases] = useState(new Set());
-          const [tab, setTab] = useState("roadmap");
-          const [expandedProject, setExpandedProject] = useState(null);
-          const [isDark, setIsDark] = useState(true);
+/* =========================
+   MAIN COMPONENT
+========================= */
+export default function RoadmapPage() {
+  const [activePhase, setActivePhase] = useState(0);
+  const [isDark, setIsDark] = useState(true);
+  const [progress, setProgress] = useState<ProgressMap>({});
 
-          const phase = PHASES[activePhase];
+  const phase = PHASES[activePhase];
 
-          useEffect(() => {
-            document.body.style.backgroundColor = isDark ? "#08090C" : "#F4F7FA";
-          }, [isDark]);
+  /* =========================
+     LOAD FROM LOCALSTORAGE
+  ========================= */
+  useEffect(() => {
+    const saved = localStorage.getItem("roadmap-progress");
+    if (saved) setProgress(JSON.parse(saved));
+  }, []);
 
-          const toggleComplete = (id) => {
-            setCompletedPhases((prev) => {
-              const next = new Set(prev);
-              if (next.has(id)) next.delete(id);
-              else next.add(id);
-              return next;
-            });
-          };
+  /* =========================
+     AUTO SAVE
+  ========================= */
+  useEffect(() => {
+    localStorage.setItem("roadmap-progress", JSON.stringify(progress));
+  }, [progress]);
 
-          // تطبیق هوشمند رنگ‌های فازها با تم لایت جهت کنتراست عالی
-          const getPhaseColor = (color) => {
-            if (isDark) return color;
-            if (color === "#00D9FF") return "#0284C7"; // Deep Sky Blue
-            if (color === "#A855F7") return "#7C3AED"; // Rich Violet
-            if (color === "#10B981") return "#059669"; // Emerald Green
-            if (color === "#F59E0B") return "#D97706"; // Amber Amber
-            if (color === "#EF4444") return "#DC2626"; // Crimson
-            if (color === "#FF6B6B") return "#E11D48"; // Rose Red
-            return color;
-          };
+  /* =========================
+     THEME SYNC
+  ========================= */
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("roadmap-theme");
+    if (savedTheme) setIsDark(savedTheme === "dark");
+  }, []);
 
-          // ساختار استایل‌های تم پریمیوم لایت (Nordic Cool) و دارک (Obsidian)
-          const t = {
-            bg: isDark ? "#08090C" : "#F4F7FA",
-            text: isDark ? "#E2E8F0" : "#334155",
-            heading: isDark ? "#F8FAFC" : "#0F172A",
-            cardBg: isDark ? "#0E1117" : "#FFFFFF",
-            cardBgMuted: isDark ? "#121620" : "#EAF0F6",
-            border: isDark ? "#1A1A2E" : "#E2E8F0",
-            borderMuted: isDark ? "#24243e" : "#CBD5E1",
-            mutedText: isDark ? "#64748B" : "#64748B",
-            navUnselected: isDark ? "#64748B" : "#64748B",
-            pillBg: isDark ? "rgba(255,255,255,0.04)" : "rgba(15,23,42,0.05)",
-            pillActiveBg: isDark ? "#1E293B" : "#FFFFFF",
-            shadow: isDark ? "none" : "0 4px 18px -4px rgba(15,23,42,0.06)",
-            navBlurBg: isDark ? "rgba(8, 9, 12, 0.8)" : "rgba(244, 247, 250, 0.8)"
-          };
+  useEffect(() => {
+    localStorage.setItem("roadmap-theme", isDark ? "dark" : "light");
+    document.body.style.background = isDark ? "#08090C" : "#F4F7FA";
+  }, [isDark]);
 
-          const pColor = getPhaseColor(phase.color);
+  /* =========================
+     HELPERS
+  ========================= */
+  const toggleTopic = (phaseId: number, topic: string) => {
+    setProgress((prev) => {
+      const p = prev[phaseId] || { completedTopics: [], completedWeeks: [] };
 
-          return (
-            <div style={{
-              fontFamily: "'Space Grotesk', 'IBM Plex Mono', sans-serif",
-              background: t.bg,
-              minHeight: "100vh",
-              color: t.text,
-              maxWidth: 1024,
-              margin: "0 auto",
-              padding: "0 0 100px 0",
-              transition: "all 0.3s ease",
-            }}>
-              <style>{` ... (omitted for brevity) ... `}</style>
+      const exists = p.completedTopics.includes(topic);
 
-              {/* STICKY USER-FRIENDLY NAVBAR */}
-              <div className="sticky-navbar">
-                <div className="segmented-control">
-                  /* Lines 682-701 omitted */
-                </div>
+      const updated = {
+        ...prev,
+        [phaseId]: {
+          ...p,
+          completedTopics: exists
+            ? p.completedTopics.filter((t) => t !== topic)
+            : [...p.completedTopics, topic],
+        },
+      };
 
-                {/* دکمه تم جذاب و کپسولی */}
-                <button onClick={() => setIsDark(!isDark)} style={{
-                  /* Lines 705-718 omitted */
-                  transition: "all 0.2s"
-                }}>
-                  /* Lines 720-721 omitted */
-                </button>
+      return updated;
+    });
+  };
+
+  const getTopicDone = (phaseId: number, topic: string) => {
+    return progress[phaseId]?.completedTopics.includes(topic);
+  };
+
+  const t = useMemo(
+    () => ({
+      bg: isDark ? "#08090C" : "#F4F7FA",
+      card: isDark ? "#0E1117" : "#FFFFFF",
+      text: isDark ? "#E2E8F0" : "#334155",
+      muted: "#64748B",
+      border: isDark ? "#1A1A2E" : "#E2E8F0",
+      accent: phase?.color || "#00D9FF",
+    }),
+    [isDark, phase]
+  );
+
+  /* =========================
+     UI
+  ========================= */
+  return (
+    <div
+      style={{
+        fontFamily: "system-ui, sans-serif",
+        background: t.bg,
+        minHeight: "100vh",
+        color: t.text,
+        transition: "0.3s ease",
+        padding: 24,
+        maxWidth: 1100,
+        margin: "0 auto",
+      }}
+    >
+      {/* HEADER */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          borderBottom: "1px solid " + t.border,
+          paddingBottom: 16,
+        }}
+      >
+        <h1 style={{ fontSize: 20, fontWeight: 700 }}>
+          Blockchain Roadmap
+        </h1>
+
+        <button
+          onClick={() => setIsDark(!isDark)}
+          style={{
+            padding: "8px 12px",
+            borderRadius: 10,
+            border: "1px solid " + t.border,
+            background: t.card,
+            color: t.text,
+            cursor: "pointer",
+          }}
+        >
+          {isDark ? "🌙 Dark" : "☀️ Light"}
+        </button>
+      </div>
+
+      {/* PHASE SELECTOR */}
+      <div
+        style={{
+          display: "flex",
+          gap: 10,
+          flexWrap: "wrap",
+          marginTop: 20,
+        }}
+      >
+        {PHASES.map((p, i) => (
+          <button
+            key={p.id}
+            onClick={() => setActivePhase(i)}
+            style={{
+              padding: "8px 10px",
+              borderRadius: 10,
+              border: "1px solid " + t.border,
+              background: i === activePhase ? p.color : t.card,
+              color: i === activePhase ? "#000" : t.text,
+              cursor: "pointer",
+              transition: "0.2s",
+              transform: i === activePhase ? "translateY(-2px)" : "none",
+            }}
+          >
+            {p.title}
+          </button>
+        ))}
+      </div>
+
+      {/* PHASE CONTENT */}
+      <div style={{ marginTop: 30 }}>
+        <h2 style={{ color: phase.color }}>{phase.title}</h2>
+        <p style={{ color: t.muted }}>{phase.tagline}</p>
+
+        {/* WEEKS */}
+        <div style={{ marginTop: 20 }}>
+          {phase.weeks.map((week: any, i: number) => (
+            <div
+              key={i}
+              style={{
+                marginBottom: 14,
+                padding: 16,
+                borderRadius: 12,
+                border: "1px solid " + t.border,
+                background: t.card,
+                transition: "0.2s",
+              }}
+            >
+              <div style={{ fontWeight: 700, marginBottom: 6 }}>
+                {week.week} — {week.focus}
               </div>
 
-              {/* HERO HEADER */}
-              <div style={{ padding: "40px 32px 24px", borderBottom: "1px solid " + t.border }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-                  /* Lines 727-730 omitted */
-                </div>
-                <h1 style={{
-                  /* Lines 732-737 omitted */
-                  lineHeight: 1.1
-                }}>
-                  /* Lines 739-740 omitted */
-                </h1>
-                
-                {/* Progress indicators */}
-                <div style={{ marginTop: 24 }}>
-                  /* Lines 744-756 omitted */
-                </div>
+              <div style={{ marginTop: 10 }}>
+                {week.topics.map((topic: string, j: number) => {
+                  const done = getTopicDone(phase.id, topic);
+
+                  return (
+                    <div
+                      key={j}
+                      onClick={() => toggleTopic(phase.id, topic)}
+                      style={{
+                        padding: "6px 8px",
+                        marginBottom: 6,
+                        borderRadius: 8,
+                        cursor: "pointer",
+                        background: done ? phase.color : "transparent",
+                        color: done ? "#000" : t.text,
+                        opacity: done ? 0.9 : 1,
+                        transition: "0.15s",
+                      }}
+                    >
+                      {done ? "✅ " : "⬜ "} {topic}
+                    </div>
+                  );
+                })}
               </div>
-
-              {/* MAIN CONTENT AREA */}
-              {tab === "roadmap" && (
-                <div className="main-layout">
-/* Lines 762-941 omitted */
-                </div>
-              )}
-
-              {/* PARALLEL SKILLS TAB */}
-              {tab === "parallel skills" && (
-                <div style={{ padding: "32px 24px" }}>
-                  /* Lines 947-989 omitted */
-                </div>
-              )}
-
-              {/* READING LIST TAB */}
-              {tab === "reading list" && (
-                <div style={{ padding: "32px 24px" }}>
-                  /* Lines 995-1039 omitted */
-                </div>
-              )}
-
-              {/* CLEAN FOOTER */}
-              <div style={{ padding: "32px 24px 0", borderTop: "1px solid " + t.border, display: "flex", justifyContent: "space-between", fontSize: 11, color: t.mutedText }}>
-                <span>Compiled using roadmap.sh/blockchain specifications</span>
-                <span>12 Month Architecture Framework</span>
-              </div>
-
             </div>
-          );
-        }
+          ))}
+        </div>
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<BlockchainRoadmap />);
-    </script>
-</body>
-</html>
+        {/* PROJECT */}
+        <div
+          style={{
+            marginTop: 30,
+            padding: 18,
+            borderRadius: 14,
+            border: "1px solid " + t.border,
+            background: t.card,
+          }}
+        >
+          <h3>{phase.project.name}</h3>
+          <p style={{ color: t.muted }}>{phase.project.description}</p>
+        </div>
+
+        {/* MILESTONE */}
+        <div style={{ marginTop: 20, color: t.muted }}>
+          <strong>Milestone:</strong> {phase.milestone}
+        </div>
+      </div>
+    </div>
+  );
+}
