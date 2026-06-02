@@ -644,23 +644,23 @@ export default function ExecutionFirstSeniorBlockchainRoadmap() {
   const phaseStats = useMemo(() => {
     return phases.map((phase) => {
       const phaseTasks = tasksByPhase.get(phase.id) || [];
-      const done = phaseTasks.filter((task) => progress[task.id]).length;
+      const doneCount = phaseTasks.filter((task) => progress[task.id]).length;
       const total = phaseTasks.length;
-      const percentage = progressFromCount(done, total);
+      const percentage = progressFromCount(doneCount, total);
 
       const projects = phase.projects.map((project) => {
-        const doneProject = project.tasks.filter((task) => progress[task.id]).length;
+        const doneProjectCount = project.tasks.filter((task) => progress[task.id]).length;
         return {
           ...project,
-          done: doneProject,
+          doneCount: doneProjectCount,
           total: project.tasks.length,
-          percentage: progressFromCount(doneProject, project.tasks.length),
+          percentage: progressFromCount(doneProjectCount, project.tasks.length),
         };
       });
 
       return {
         ...phase,
-        done,
+        doneCount,
         total,
         percentage,
         projects,
@@ -927,7 +927,7 @@ export default function ExecutionFirstSeniorBlockchainRoadmap() {
                   >
                     <p className={cx("text-sm font-semibold", strongText)}>{project.name}</p>
                     <p className={cx("mt-1 text-sm", subtleText)}>
-                      {project.percentage}% complete · {project.done}/{project.total} tasks
+                      {project.percentage}% complete · {project.doneCount}/{project.total} tasks
                     </p>
                   </button>
                 ))}
@@ -1199,7 +1199,7 @@ export default function ExecutionFirstSeniorBlockchainRoadmap() {
                               <div className="flex items-center justify-between">
                                 <p className={cx("text-sm font-semibold", strongText)}>Tasks</p>
                                 <span className={cx("text-sm", subtleText)}>
-                                  {project.done}/{project.total} complete
+                                  {project.doneCount}/{project.total} complete
                                 </span>
                               </div>
                               <div className="mt-3 space-y-2">
@@ -1310,3 +1310,5 @@ export default function ExecutionFirstSeniorBlockchainRoadmap() {
     </div>
   );
 }
+
+export const dynamic = "force-dynamic";
